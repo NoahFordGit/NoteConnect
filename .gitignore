@@ -1,0 +1,41 @@
+## Core Build Artifacts
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## .NET Core / .NET 5+ specific
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## ASP.NET Core Web Tools / Client-side
+wwwroot/lib/
+node_modules/
+bower_components/
+
+## User-Specific Settings & IDEs
+*.user
+*.userosscache
+*.suo
+*.userprefs
+.vs/
+.idea/
+*.sln.docstates
+
+## Secrets and Local Configurations
+appsettings.Development.json
+*.Secrets.json
+secrets.json
+.secrets/
+
+## Publish Output
+*.publish.htm
+*.pubxml
+*.pubxml.user
+
+## Diagnostics & Testing
+*.log
+*.pfx
+*.publishsettings
+TestResults/
