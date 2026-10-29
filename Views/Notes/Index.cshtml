@@ -1,0 +1,44 @@
+@model IEnumerable<Note>
+@{
+    ViewData["Title"] = "My notes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>My notes</h1>
+    <a asp-action="Create" class="btn btn-primary">Create note</a>
+</div>
+
+@if (!Model.Any())
+{
+    <p>You don't have any notes yet. Create your first note to get started.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Notebook ID</th>
+                    <th scope="col">Created (UTC)</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var note in Model)
+                {
+                    <tr>
+                        <td><a asp-action="Details" asp-route-id="@note.NoteId">@note.NoteTitle</a></td>
+                        <td>@note.NotebookId</td>
+                        <td>@note.DateCreated.ToString("MMM d, yyyy HH:mm")</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@note.NoteId" aria-label="Edit @note.NoteTitle">Edit</a>
+                            <span aria-hidden="true"> | </span>
+                            <a asp-action="Delete" asp-route-id="@note.NoteId" aria-label="Delete @note.NoteTitle">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
