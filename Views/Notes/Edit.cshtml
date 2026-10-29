@@ -1,0 +1,16 @@
+@model Note
+@{
+    ViewData["Title"] = "Edit note";
+}
+
+<h1>Edit note</h1>
+
+<form asp-action="Edit" asp-route-id="@Model.NoteId" method="post">
+    <partial name="_NoteForm" model="Model" />
+    <button type="submit" class="btn btn-primary">Save changes</button>
+    <a asp-action="Details" asp-route-id="@Model.NoteId" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

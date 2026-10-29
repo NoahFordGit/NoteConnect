@@ -2703,23 +2703,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\noahm\\.nuget\\packages\\": {},
+    "C:\\Users\\brock\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\noahm\\OneDrive - East Tennessee State University\\CSCI 4250\\NoteConnect\\NoteConnect.csproj",
+      "projectUniqueName": "C:\\Users\\brock\\NoteConnect\\NoteConnect.csproj",
       "projectName": "NoteConnect",
-      "projectPath": "C:\\Users\\noahm\\OneDrive - East Tennessee State University\\CSCI 4250\\NoteConnect\\NoteConnect.csproj",
-      "packagesPath": "C:\\Users\\noahm\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\noahm\\OneDrive - East Tennessee State University\\CSCI 4250\\NoteConnect\\obj\\",
+      "projectPath": "C:\\Users\\brock\\NoteConnect\\NoteConnect.csproj",
+      "packagesPath": "C:\\Users\\brock\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\brock\\NoteConnect\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\noahm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\brock\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2798,7 +2798,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
