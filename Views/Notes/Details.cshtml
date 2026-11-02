@@ -1,0 +1,15 @@
+@model Note
+@{
+    ViewData["Title"] = Model.NoteTitle;
+}
+
+<h1 class="text-break">@Model.NoteTitle</h1>
+<p class="text-muted">
+    Notebook @Model.NotebookId &middot; Created @Model.DateCreated.ToString("MMM d, yyyy HH:mm") UTC
+</p>
+
+<div class="border rounded p-3 mb-3" style="white-space: pre-wrap; overflow-wrap: anywhere;">@Model.Content</div>
+
+<a asp-action="Edit" asp-route-id="@Model.NoteId" class="btn btn-primary">Edit</a>
+<a asp-action="Delete" asp-route-id="@Model.NoteId" class="btn btn-outline-danger">Delete</a>
+<a asp-action="Index" class="btn btn-outline-secondary">Back to notes</a>

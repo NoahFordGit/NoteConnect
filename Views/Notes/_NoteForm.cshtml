@@ -1,0 +1,21 @@
+@model Note
+
+<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+<div class="mb-3">
+    <label asp-for="NoteTitle" class="form-label">Title</label>
+    <input asp-for="NoteTitle" class="form-control" required />
+    <span asp-validation-for="NoteTitle" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="NotebookId" class="form-label">Notebook ID</label>
+    <input asp-for="NotebookId" class="form-control" type="number" min="1" required />
+    <span asp-validation-for="NotebookId" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Content" class="form-label">Content</label>
+    <textarea asp-for="Content" class="form-control" rows="12"></textarea>
+    <span asp-validation-for="Content" class="text-danger"></span>
+</div>

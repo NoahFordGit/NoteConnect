@@ -1,0 +1,16 @@
+@model Note
+@{
+    ViewData["Title"] = "Create note";
+}
+
+<h1>Create note</h1>
+
+<form asp-action="Create" method="post">
+    <partial name="_NoteForm" model="Model" />
+    <button type="submit" class="btn btn-primary">Create note</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

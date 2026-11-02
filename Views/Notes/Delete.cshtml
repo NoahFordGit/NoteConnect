@@ -1,0 +1,12 @@
+@model Note
+@{
+    ViewData["Title"] = "Delete note";
+}
+
+<h1>Delete note</h1>
+<p>Are you sure you want to delete <strong class="text-break">@Model.NoteTitle</strong>? This cannot be undone.</p>
+
+<form asp-action="Delete" asp-route-id="@Model.NoteId" method="post">
+    <button type="submit" class="btn btn-danger">Delete note</button>
+    <a asp-action="Details" asp-route-id="@Model.NoteId" class="btn btn-outline-secondary">Cancel</a>
+</form>
