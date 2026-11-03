@@ -1,6 +1,10 @@
+@using Ganss.Xss
 @model Note
 @{
     ViewData["Title"] = Model.NoteTitle;
+
+    var sanitizer = new HtmlSanitizer();
+    var safeContent = sanitizer.Sanitize(Model.Content);
 }
 
 <h1 class="text-break">@Model.NoteTitle</h1>
@@ -8,8 +12,32 @@
     Notebook @Model.NotebookId &middot; Created @Model.DateCreated.ToString("MMM d, yyyy HH:mm") UTC
 </p>
 
-<div class="border rounded p-3 mb-3" style="white-space: pre-wrap; overflow-wrap: anywhere;">@Model.Content</div>
+<div class="border rounded mb-3">
+    <div id="note-viewer"></div>
+</div>
+
+<input type="hidden" id="note-content" value="@safeContent" />
 
 <a asp-action="Edit" asp-route-id="@Model.NoteId" class="btn btn-primary">Edit</a>
 <a asp-action="Delete" asp-route-id="@Model.NoteId" class="btn btn-outline-danger">Delete</a>
 <a asp-action="Index" class="btn btn-outline-secondary">Back to notes</a>
+
+@section Scripts {
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <script>
+        const quill = new Quill("#note-viewer", {
+            theme: "snow",
+            readOnly: true,
+            modules: {
+                toolbar: false
+            }
+        });
+
+        quill.clipboard.dangerouslyPasteHTML(
+            document.getElementById("note-content").value
+        );
+    </script>
+}
