@@ -1,9 +1,9 @@
 @model Note
 @{
-    ViewData["Title"] = "Edit note";
+    ViewData["Title"] = "Edit Note";
 }
 
-<h1>Edit note</h1>
+<h1>Edit Note</h1>
 
 <form asp-action="Edit" asp-route-id="@Model.NoteId" method="post">
     <partial name="_NoteForm" model="Model" />
@@ -13,4 +13,10 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <script src="~/js/note-editor.js" asp-append-version="true"></script>
 }

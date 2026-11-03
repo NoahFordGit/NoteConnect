@@ -1,16 +1,22 @@
 @model Note
 @{
-    ViewData["Title"] = "Create note";
+    ViewData["Title"] = "Create Note";
 }
 
-<h1>Create note</h1>
+<h1>Create Note</h1>
 
 <form asp-action="Create" method="post">
     <partial name="_NoteForm" model="Model" />
-    <button type="submit" class="btn btn-primary">Create note</button>
+    <button type="submit" class="btn btn-primary">Create Note</button>
     <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
 </form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <script src="~/js/note-editor.js" asp-append-version="true"></script>
+
 }
