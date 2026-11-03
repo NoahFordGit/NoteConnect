@@ -39,3 +39,12 @@ secrets.json
 *.pfx
 *.publishsettings
 TestResults/
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
+# Local database files
+*.sqlite
+*.sqlite3
