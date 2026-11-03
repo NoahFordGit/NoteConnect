@@ -230,7 +230,7 @@ namespace NoteConnect.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("NotebookId")
+                    b.Property<int?>("NotebookId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserId")
