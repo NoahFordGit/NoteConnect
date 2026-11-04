@@ -8,6 +8,7 @@ public class NoteRepository(ApplicationDbContext context) : INoteRepository
 {
     public Task<List<Note>> GetAllAsync(string userId) => context.Notes
         .AsNoTracking()
+        .Include(n => n.Notebook)
         .Where(n => n.UserId == userId)
         .OrderByDescending(n => n.DateCreated)
         .ThenByDescending(n => n.NoteId)
@@ -15,6 +16,7 @@ public class NoteRepository(ApplicationDbContext context) : INoteRepository
 
     public Task<Note?> GetByIdAsync(int noteId, string userId) => context.Notes
         .AsNoTracking()
+        .Include(n => n.Notebook)
         .SingleOrDefaultAsync(n => n.NoteId == noteId && n.UserId == userId);
 
     public async Task CreateAsync(Note note, string userId)

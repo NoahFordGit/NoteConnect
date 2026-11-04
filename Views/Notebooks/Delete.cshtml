@@ -1,0 +1,13 @@
+@model Notebook
+@{
+    ViewData["Title"] = "Delete notebook";
+}
+
+<h1>Delete notebook</h1>
+<p>Are you sure you want to delete <strong class="text-break">@Model.NotebookName</strong>?</p>
+<p>The @Model.Notes.Count note(s) inside this notebook will be kept and moved to unfiled notes.</p>
+
+<form asp-action="Delete" asp-route-id="@Model.NotebookId" method="post">
+    <button type="submit" class="btn btn-danger">Delete notebook</button>
+    <a asp-action="Details" asp-route-id="@Model.NotebookId" class="btn btn-outline-secondary">Cancel</a>
+</form>
