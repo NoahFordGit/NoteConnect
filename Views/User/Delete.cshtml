@@ -1,0 +1,13 @@
+@using NoteConnect.Models.Entities
+@model User
+
+@{
+    ViewData["Title"] = "Delete user";
+}
+
+<h2>Edit Profile</h2>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post"
+      onsubmit="return confirm('Are you sure?')">
+    <button type="submit" class="btn btn-danger">Delete Account</button>
+</form>
