@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NoteConnect.Models.Enities;
+using NoteConnect.Models.Entities;
 namespace NoteConnect.Services;
 
 using NoteConnect.Data;
@@ -16,32 +16,32 @@ public class UserRepository : IUserRepository
 
     public async Task<User> CreateAsync(User user)
     {
-        _context.User.Add(user);
+        _context.Users.Add(user);
         await _context.SaveChangesAsync();
         return user;
     } // End method
 
     public async Task<IEnumerable<User>> ReadAllAsync()
     {
-        return await _context.User
+        return await _context.Users
             .ToListAsync();
     } // End method
 
-    public async Task<User?> ReadAsync(int UserId)
+    public async Task<User?> ReadAsync(string UserId)
     {
-        return await _context.User 
+        return await _context.Users 
             .FirstOrDefaultAsync(); 
     } // End method
 
     public async Task<User?> UpdateAsync(User user)
     {
-        var existing = await _context.User.FindAsync(user.UserId);
+        var existing = await _context.Users.FindAsync(user.Id);
         if (existing == null) 
         {
             return null;
         } // End if
 
-        existing.Username = user.Username;
+        existing.UserName = user.UserName;
         existing.FirstName = user.FirstName;
         existing.LastName = user.LastName;
         existing.Email = user.Email;
@@ -52,15 +52,15 @@ public class UserRepository : IUserRepository
 
     } // End method
 
-    public async Task<bool> DeleteAsync(int UserId)
+    public async Task<bool> DeleteAsync(string UserId)
     {
-        var existing = await _context.User.FindAsync(UserId);
+        var existing = await _context.Users.FindAsync(UserId);
         if (existing == null) 
         {
             return false;
         } // End if
 
-        _context.User.Remove(existing);
+        _context.Users.Remove(existing);
         await _context.SaveChangesAsync();
         return true;
     } // End method

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NoteConnect.Data;
+using NoteConnect.Models.Entities;
 using NoteConnect.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +11,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+// Set this to false just for the demo. Needs to be changed later
+builder.Services.AddDefaultIdentity<User>(options => 
+    options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
