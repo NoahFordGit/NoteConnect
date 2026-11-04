@@ -4,9 +4,17 @@
 
 <div class="text-center">
     <h1 class="display-4">NoteConnect Demo</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>A collaborative notetaking platform for students, by students.</p>
 
     <a asp-controller="Notes" asp-action="Index" class="btn btn-primary">
         See Your Notes
     </a>
+
+    <a asp-controller="Notebooks" asp-action="Index" class="btn btn-primary">
+        See Your Notebooks
+    </a>
+
+      <a asp-controller="User" asp-action="Index" class="btn btn-primary">
+        See Account Details
+    </a>  
 </div>
