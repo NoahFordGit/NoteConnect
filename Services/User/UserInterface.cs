@@ -8,6 +8,6 @@ public interface IUserRepository
     Task<User?> ReadAsync(string UserId);
     Task<User> CreateAsync(User user);
     Task<User?> UpdateAsync(User user);
-    Task<bool> DeleteAsync(string UserId);
+    Task<bool> DeleteAsync(User user);
      
 } // End interface

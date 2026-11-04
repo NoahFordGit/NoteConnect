@@ -2,13 +2,21 @@
 @model User
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Profile";
 }
 
 <h1>User Index</h1>
 
-<p>@Model.UserName</p>
-<p>@Model.FirstName</p>
-<p>@Model.LastName</p>
-<p>@Model.Email</p>
-<p>@Model.DateCreated</p>
+
+<table class="table">
+        <tr><th>Username</th><td>@Model.UserName</td></tr>
+        <tr><th>Email</th><td>@Model.Email</td></tr>
+        <tr><th>First Name</th><td>@Model.FirstName</td></tr>
+        <tr><th>Last Name</th><td>@Model.LastName</td></tr>
+        <tr><th>Date Created</th><td>@Model.DateCreated.ToString("MMM d, yyyy")</td></tr>
+</table>
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline;">
+    <button type="submit" class="btn btn-danger" onclick="return confirm('Delete your account?')">Delete</button>
+</form>

@@ -30,7 +30,7 @@ public class UserRepository : IUserRepository
     public async Task<User?> ReadAsync(string UserId)
     {
         return await _context.Users 
-            .FirstOrDefaultAsync(); 
+            .FirstOrDefaultAsync(u => u.Id == UserId); 
     } // End method
 
     public async Task<User?> UpdateAsync(User user)
@@ -45,16 +45,16 @@ public class UserRepository : IUserRepository
         existing.FirstName = user.FirstName;
         existing.LastName = user.LastName;
         existing.Email = user.Email;
-        existing.DateCreated = user.DateCreated;
+        existing.PhoneNumber = user.PhoneNumber;
 
         await _context.SaveChangesAsync();
         return existing;
 
     } // End method
 
-    public async Task<bool> DeleteAsync(string UserId)
+    public async Task<bool> DeleteAsync(User user)
     {
-        var existing = await _context.Users.FindAsync(UserId);
+        var existing = await _context.Users.FindAsync(user.Id);
         if (existing == null) 
         {
             return false;
