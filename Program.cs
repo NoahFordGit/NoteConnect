@@ -19,7 +19,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<INotebookRepository, NotebookRepository>();
+builder.Services
+    .AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration[
+            "Authentication:Google:ClientId"]!;
 
+        options.ClientSecret = builder.Configuration[
+            "Authentication:Google:ClientSecret"]!;
+
+        options.CallbackPath = "/signin-google";
+    });
+
+builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

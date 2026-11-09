@@ -1,0 +1,15 @@
+@page
+@model NoteConnect.Areas.Identity.Pages.Account.ExternalLoginModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Google sign-in";
+}
+
+<h1>@ViewData["Title"]</h1>
+<div asp-validation-summary="All" class="text-danger" role="alert"></div>
+<p><a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Return to login</a></p>
+@if (Model.EmailAlreadyRegistered)
+{
+    <p>Sign in to your existing NoteConnect account first, then
+        <a asp-page="./Manage/ExternalLogins">link Google in your account settings</a>.</p>
+}

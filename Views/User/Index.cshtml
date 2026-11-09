@@ -1,8 +1,10 @@
 @using NoteConnect.Models.Entities
 @model User
+@inject Microsoft.AspNetCore.Identity.UserManager<User> UserManager
 
 @{
     ViewData["Title"] = "Profile";
+    var hasPassword = await UserManager.HasPasswordAsync(Model);
 }
 
 <h1>User Index</h1>
@@ -16,6 +18,13 @@
         <tr><th>Date Created</th><td>@Model.DateCreated.ToString("MMM d, yyyy")</td></tr>
 </table>
 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+<a asp-area="Identity" asp-page="/Account/Manage/ChangePassword" class="btn btn-outline-primary">@(hasPassword ? "Change password" : "Set password")</a>
+<a asp-area="Identity" asp-page="/Account/Manage/ExternalLogins" class="btn btn-outline-primary">Manage Google sign-in</a>
+
+@if (!hasPassword)
+{
+    <p class="mt-3">Set a NoteConnect password to sign in with your email and password as well as Google. Your Google sign-in will continue to work.</p>
+}
 
 <form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline;">
     <button type="submit" class="btn btn-danger" onclick="return confirm('Delete your account?')">Delete</button>
