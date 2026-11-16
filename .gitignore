@@ -28,6 +28,7 @@ appsettings.Development.json
 *.Secrets.json
 secrets.json
 .secrets/
+.env
 
 ## Publish Output
 *.publish.htm
