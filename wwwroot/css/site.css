@@ -17,8 +17,19 @@ html {
   min-height: 100%;
 }
 
+/* Background */
 body {
-  margin-bottom: 60px;
+    background-image: url('/images/paper4g.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Card Styling */
+.card {
+    background-color: #e7e5dc;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {

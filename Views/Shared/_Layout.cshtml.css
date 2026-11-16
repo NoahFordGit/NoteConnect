@@ -46,3 +46,37 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+
+/* Notebook Navigation */
+.notebook-navbar {
+    padding-bottom: 0;
+}
+
+.notebook-tabs {
+    gap: 5px;
+    align-items: flex-end;
+}
+
+.notebook-tab {
+    background-color: #B9C9DA;
+    color: #333 !important;
+    padding: 12px 24px !important;
+    border-radius: 12px 12px 0 0;
+    transition: 0.2s;
+}
+
+.notebook-tab:hover {
+    background-color: #87a8cc;
+    transform: translateY(-3px);
+}
+
+.notebook-tab.active {
+    background-color: #eca7b9;
+    font-weight: bold;
+}
+
+/* Main Content Card */
+.main-content-card {
+    border-radius: 0 12px 12px 12px;
+}
