@@ -1,0 +1,15 @@
+@model Notebook
+
+<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+<div class="mb-3">
+    <label asp-for="NotebookName" class="form-label">Notebook name</label>
+    <input asp-for="NotebookName" class="form-control" maxlength="100" required />
+    <span asp-validation-for="NotebookName" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Description" class="form-label">Description (optional)</label>
+    <textarea asp-for="Description" class="form-control" rows="4" maxlength="500"></textarea>
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>

@@ -1,0 +1,16 @@
+@model Notebook
+@{
+    ViewData["Title"] = "Edit Notebook";
+}
+
+<h1>Edit Notebook</h1>
+
+<form asp-action="Edit" asp-route-id="@Model.NotebookId" method="post">
+    <partial name="_NotebookForm" model="Model" />
+    <button type="submit" class="btn btn-primary">Save changes</button>
+    <a asp-action="Details" asp-route-id="@Model.NotebookId" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

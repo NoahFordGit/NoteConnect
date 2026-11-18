@@ -9,8 +9,10 @@
 </div>
 
 <div class="mb-3">
-    <label asp-for="NotebookId" class="form-label">Notebook ID</label>
-    <input asp-for="NotebookId" class="form-control" type="number" min="1"/>
+    <label asp-for="NotebookId" class="form-label">Notebook</label>
+    <select asp-for="NotebookId" asp-items="ViewBag.Notebooks" class="form-select">
+        <option value="">No notebook</option>
+    </select>
     <span asp-validation-for="NotebookId" class="text-danger"></span>
 </div>
 

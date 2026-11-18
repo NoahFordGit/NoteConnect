@@ -1,0 +1,53 @@
+@model Notebook
+@{
+    ViewData["Title"] = Model.NotebookName;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="text-break">@Model.NotebookName</h1>
+    <a asp-controller="Notes" asp-action="Create" asp-route-notebookId="@Model.NotebookId" class="btn btn-primary">Add note</a>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.Description))
+{
+    <p>@Model.Description</p>
+}
+<p class="text-muted">Created @Model.DateCreated.ToString("MMM d, yyyy HH:mm") UTC</p>
+
+<h2 class="h4 mt-4">Notes</h2>
+@if (!Model.Notes.Any())
+{
+    <p>There are no notes in this notebook yet. Add your first note to get started.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Created (UTC)</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var note in Model.Notes.OrderByDescending(n => n.DateCreated).ThenByDescending(n => n.NoteId))
+                {
+                    <tr>
+                        <td><a asp-controller="Notes" asp-action="Details" asp-route-id="@note.NoteId">@note.NoteTitle</a></td>
+                        <td>@note.DateCreated.ToString("MMM d, yyyy HH:mm")</td>
+                        <td>
+                            <a asp-controller="Notes" asp-action="Edit" asp-route-id="@note.NoteId">Edit</a>
+                            <span aria-hidden="true"> | </span>
+                            <a asp-controller="Notes" asp-action="Delete" asp-route-id="@note.NoteId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<a asp-action="Edit" asp-route-id="@Model.NotebookId" class="btn btn-primary">Edit notebook</a>
+<a asp-action="Delete" asp-route-id="@Model.NotebookId" class="btn btn-outline-danger">Delete notebook</a>
+<a asp-action="Index" class="btn btn-outline-secondary">Back to notebooks</a>

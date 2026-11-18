@@ -18,4 +18,6 @@ public class Note
     public string UserId { get; set; } = string.Empty;
 
     public int? NotebookId { get; set; }
+
+    public Notebook? Notebook { get; set; }
 }

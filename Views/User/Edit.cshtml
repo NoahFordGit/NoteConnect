@@ -1,0 +1,42 @@
+@using NoteConnect.Models.Entities
+@model User
+
+
+@{
+    ViewData["Title"] = "Edit user";
+}
+
+<h2>Edit Profile</h2>
+
+<form asp-action="Edit" method="post" asp-route-Id="@Model.Id">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label>First Name</label>
+        <input name="FirstName" value="@Model.FirstName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Last Name</label>
+        <input name="LastName" value="@Model.LastName" class="form-control" />
+    </div>
+    
+    <div class="form-group">
+        <label>Username</label>
+        <input name="UserName" value="@Model.UserName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input name="Email" value="@Model.Email" class="form-control" type="email" />
+    </div>
+
+    <div class="form-group">
+        <label>Phone Number</label>
+        <input name="PhoneNumber" value="@Model.PhoneNumber" class="form-control" type="tel" />
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

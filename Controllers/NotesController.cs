@@ -1,13 +1,14 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NoteConnect.Models.Entities;
 using NoteConnect.Services;
 
 namespace NoteConnect.Controllers;
 
 [Authorize]
-public class NotesController(INoteRepository notes) : Controller
+public class NotesController(INoteRepository notes, INotebookRepository notebooks) : Controller
 {
     private string CurrentUserId => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
@@ -25,20 +26,30 @@ public class NotesController(INoteRepository notes) : Controller
     }
 
     // GET: Notes/Create
-    public IActionResult Create() => View(new Note());
+    public async Task<IActionResult> Create(int? notebookId)
+    {
+        var note = new Note();
+        if (notebookId is int id && await notebooks.ExistsAsync(id, CurrentUserId))
+            note.NotebookId = id;
+
+        await SetNotebookOptionsAsync(note.NotebookId);
+        return View(note);
+    }
 
     // POST: Notes/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("NoteTitle,Content,NotebookId")] Note note)
     {
-        SetOwnerAndValidate(note);
+        await SetOwnerAndValidateAsync(note);
 
         if (!ModelState.IsValid)
+        {
+            await SetNotebookOptionsAsync(note.NotebookId);
             return View(note);
+        }
 
         await notes.CreateAsync(note, CurrentUserId);
-
         return RedirectToAction(nameof(Index));
     }
 
@@ -46,7 +57,11 @@ public class NotesController(INoteRepository notes) : Controller
     public async Task<IActionResult> Edit(int id)
     {
         var note = await FindNoteAsync(id);
-        return note is null ? NotFound() : View(note);
+        if (note is null)
+            return NotFound();
+
+        await SetNotebookOptionsAsync(note.NotebookId);
+        return View(note);
     }
 
     // POST: Notes/Edit/5
@@ -59,12 +74,13 @@ public class NotesController(INoteRepository notes) : Controller
         if (note is null)
             return NotFound();
 
-        SetOwnerAndValidate(input);
+        await SetOwnerAndValidateAsync(input);
 
         if (!ModelState.IsValid)
         {
             input.NoteId = note.NoteId;
             input.DateCreated = note.DateCreated;
+            await SetNotebookOptionsAsync(input.NotebookId);
             return View(input);
         }
 
@@ -94,13 +110,26 @@ public class NotesController(INoteRepository notes) : Controller
 
     private Task<Note?> FindNoteAsync(int id) => notes.GetByIdAsync(id, CurrentUserId);
 
-    private void SetOwnerAndValidate(Note note)
+    private async Task SetOwnerAndValidateAsync(Note note)
     {
         // Ownership comes from the login, never from submitted form fields.
         note.UserId = CurrentUserId;
         ModelState.Remove(nameof(Note.UserId));
 
-        if (note.NotebookId <= 0)
-            ModelState.AddModelError(nameof(Note.NotebookId), "Select a notebook.");
+        // A note can be unfiled, or stored in a notebook owned by this user.
+        if (note.NotebookId is int notebookId &&
+            (notebookId <= 0 || !await notebooks.ExistsAsync(notebookId, CurrentUserId)))
+        {
+            ModelState.AddModelError(nameof(Note.NotebookId), "Select one of your notebooks.");
+        }
+    }
+
+    private async Task SetNotebookOptionsAsync(int? notebookId)
+    {
+        ViewBag.Notebooks = new SelectList(
+            await notebooks.GetAllAsync(CurrentUserId),
+            nameof(Notebook.NotebookId),
+            nameof(Notebook.NotebookName),
+            notebookId);
     }
 }
