@@ -5,6 +5,8 @@ using NoteConnect.Models.Entities;
 using NoteConnect.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
+using NoteConnect.ViewModels;
+using System.Security.Claims;
 
 namespace NoteConnect.Controllers;
 
@@ -22,16 +24,26 @@ public class UserController : Controller
 
     public async Task<IActionResult> Index(string Id)
     {
-        Console.WriteLine($"DEBUG: Claim ID = '{Id}'"); 
         var user = await _userManager.GetUserAsync(User);
-       // var user = await _userRepo.ReadAsync(Id);
-        //var user = await _userRepo.ReadAsync(User);
+
         if (user is null) 
         {
             return NotFound();
         } // End if
 
-        return View(user);
+        var viewModel = new UserViewModel
+        {
+            UserId = user.Id,
+            UserName = user.UserName,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
+            DateGiven = user.DateCreated,
+            HasPassword = await _userManager.HasPasswordAsync(user) // Gets password info (used to be in index)
+        };
+
+        return View(viewModel);
     } // End method
 
    public async Task<IActionResult> Edit(string Id)
@@ -42,41 +54,56 @@ public class UserController : Controller
             return RedirectToAction("Index");
         } // End if
 
-        return View(user);
+        var viewModel = new UserViewModel
+        {
+            UserId = user.Id,
+            UserName = user.UserName,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
+            DateGiven = user.DateCreated
+        };
+
+        return View(viewModel);
     } // End method
 
 
     [HttpPost]
-    public async Task<IActionResult> Edit(string Id, User input)
+    [ValidateAntiForgeryToken]
+    // The userManager is used here so that the base AspNetUser table gets udpated correctly
+    public async Task<IActionResult> Edit(UserViewModel input)
     {
         if(ModelState.IsValid == false)
         {
-            // Added this bit for troubleshooting
-            foreach (var state in ModelState.Values)
-            foreach (var error in state.Errors)
-                Console.WriteLine($"Error: {error.ErrorMessage}");
             return View(input);
         } // End if
-        var user = await _userRepo.ReadAsync(Id);
+        var user = await _userManager.FindByIdAsync(input.UserId!);
 
-        // Just including fields that we need right now
-       // user.Id = Id;
+        user.UserName = input.UserName;
         user.FirstName = input.FirstName;
-        user.LastName = input.LastName;user.UserName = input.UserName;
+        user.LastName = input.LastName;
+        user.UserName = input.UserName;
         user.Email = input.Email;
         user.PhoneNumber = input.PhoneNumber;
 
-        await _userRepo.UpdateAsync(user);
+        await _userManager.UpdateAsync(user);
         return RedirectToAction("Index");
     } // End method
 
 
     public async Task<IActionResult> Delete(string Id)
     {
-        var user = await _userRepo.ReadAsync(Id);
-        if(user is null)
+        var currentUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(Id != currentUser)
         {
-            return RedirectToAction("Index");
+            return Forbid();
+        } // End if
+
+        var user = await _userRepo.ReadAsync(Id);
+        if (user is null)
+        {
+            return NotFound();
         } // End if
 
         return View(user);
@@ -84,9 +111,24 @@ public class UserController : Controller
 
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(string Id, User user)
     {
-        await _userRepo.DeleteAsync(user);
+        // Just for security purposes
+        var currentUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(Id != currentUser)
+        {
+            return Forbid();
+        } // End if
+
+
+        var userToDelete = await _userManager.FindByIdAsync(Id);
+        if (user is null)
+        {
+            return NotFound();
+        } // End if
+
+        await _userManager.DeleteAsync(userToDelete);
         // Clear the session and log out basically
         await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
         return RedirectToAction("Index", "Home");

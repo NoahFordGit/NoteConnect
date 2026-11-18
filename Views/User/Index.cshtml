@@ -1,10 +1,9 @@
-@using NoteConnect.Models.Entities
-@model User
-@inject Microsoft.AspNetCore.Identity.UserManager<User> UserManager
+@using NoteConnect.ViewModels
+@model UserViewModel
 
 @{
     ViewData["Title"] = "Profile";
-    var hasPassword = await UserManager.HasPasswordAsync(Model);
+    bool hasPassword = Model.HasPassword;
 }
 
 <h1>User Index</h1>
@@ -15,9 +14,9 @@
         <tr><th>Email</th><td>@Model.Email</td></tr>
         <tr><th>First Name</th><td>@Model.FirstName</td></tr>
         <tr><th>Last Name</th><td>@Model.LastName</td></tr>
-        <tr><th>Date Created</th><td>@Model.DateCreated.ToString("MMM d, yyyy")</td></tr>
+        <tr><th>Date Created</th><td>@Model.DateGiven.ToString("MMM d, yyyy")</td></tr>
 </table>
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+<a asp-action="Edit" asp-route-id="@Model.UserId" class="btn btn-outline-primary">Edit</a>
 <a asp-area="Identity" asp-page="/Account/Manage/ChangePassword" class="btn btn-outline-primary">@(hasPassword ? "Change password" : "Set password")</a>
 <a asp-area="Identity" asp-page="/Account/Manage/ExternalLogins" class="btn btn-outline-primary">Manage Google sign-in</a>
 
@@ -26,6 +25,6 @@
     <p class="mt-3">Set a NoteConnect password to sign in with your email and password as well as Google. Your Google sign-in will continue to work.</p>
 }
 
-<form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline;">
+<form asp-action="Delete" asp-route-id="@Model.UserId" method="post" style="display:inline;">
     <button type="submit" class="btn btn-danger" onclick="return confirm('Delete your account?')">Delete</button>
 </form>

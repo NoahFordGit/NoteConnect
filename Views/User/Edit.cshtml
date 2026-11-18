@@ -1,5 +1,5 @@
-@using NoteConnect.Models.Entities
-@model User
+@using NoteConnect.ViewModels
+@model UserViewModel
 
 
 @{
@@ -8,8 +8,8 @@
 
 <h2>Edit Profile</h2>
 
-<form asp-action="Edit" method="post" asp-route-Id="@Model.Id">
-    <input type="hidden" asp-for="Id" />
+<form asp-action="Edit" method="post" asp-route-Id="@Model.UserId">
+    <input type="hidden" asp-for="UserId" />
 
     <div class="form-group">
         <label>First Name</label>
