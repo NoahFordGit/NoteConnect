@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NoteConnect.ViewModels
 {
-    public class UserVM {
+    public class UserViewModel {
 
         [Required(ErrorMessage = "First name is required.")]
         public string FirstNameSelected {get; set;} = string.Empty;

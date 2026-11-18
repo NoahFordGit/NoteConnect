@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace NoteConnect.ViewModels
 {
-    public class NoteVM
+    public class NoteViewModel
     {
         public int IdGiven {get; set;}
 
