@@ -41,7 +41,7 @@
                             <td class="text-end">
                                 <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@notebook.NotebookId" aria-label="Edit @notebook.NotebookName">Edit <i class="bi bi-pencil-fill"></i></a>
                                 
-                                <a class="btn btn-danger delete" asp-action="Delete" asp-route-id="@notebook.NotebookId" aria-label="Delete @notebook.NotebookName">Delete <i class="bi bi-trash3"></i></a>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteNotebookModal" data-notebook-id="@notebook.NotebookId" data-notebook-name="@notebook.NotebookName">Delete <i class="bi bi-trash"></i></button>
                             </td>
                         </tr>
                     }
@@ -49,4 +49,66 @@
             </table>
         </div>
     }
+    @section Modals {
+        <div class="modal fade" id="deleteNotebookModal" tabindex="-1"
+            aria-labelledby="deleteNotebookModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteNotebookModalLabel">
+                            Delete Notebook?
+                        </h5>
+
+                        <button type="button" class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        Are you sure you want to delete
+                        <strong id="notebookNameToDelete"></strong>?
+                        This action cannot be undone.
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <form asp-action="Delete" method="post">
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                name="id"
+                                id="notebookIdToDelete" />
+
+                            <button type="submit" class="btn btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
 </div>
+
+    @section Scripts {
+        <script>
+            const deleteNotebookModal = document.getElementById('deleteNotebookModal');
+
+            deleteNotebookModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+
+                const notebookId = button.getAttribute('data-notebook-id');
+                const notebookName = button.getAttribute('data-notebook-name');
+
+                document.getElementById('notebookIdToDelete').value = notebookId;
+                document.getElementById('notebookNameToDelete').textContent = notebookName;
+            });
+        </script>
+    }

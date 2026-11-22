@@ -42,6 +42,17 @@ body {
     min-height: 100vh;
 }
 
+/* Main Content */
+.main-content {
+    background-color: rgba(36, 36, 43, 0.80);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .to-do {
   background-color: white;
   font-size: 18px;
