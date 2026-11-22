@@ -1,46 +1,52 @@
 @model IEnumerable<Notebook>
 @{
-    ViewData["Title"] = "My notebooks";
+    ViewData["Title"] = "My Notebooks";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>My notebooks</h1>
-    <a asp-action="Create" class="btn btn-primary">Create notebook</a>
-</div>
-
-@if (!Model.Any())
-{
-    <p>You don't have any notebooks yet. Create one to organize your notes.</p>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table align-middle">
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Notes</th>
-                    <th scope="col">Created (UTC)</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var notebook in Model)
-                {
-                    <tr>
-                        <td><a asp-action="Details" asp-route-id="@notebook.NotebookId">@notebook.NotebookName</a></td>
-                        <td>@notebook.Description</td>
-                        <td>@notebook.Notes.Count</td>
-                        <td>@notebook.DateCreated.ToString("MMM d, yyyy HH:mm")</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@notebook.NotebookId" aria-label="Edit @notebook.NotebookName">Edit</a>
-                            <span aria-hidden="true"> | </span>
-                            <a asp-action="Delete" asp-route-id="@notebook.NotebookId" aria-label="Delete @notebook.NotebookName">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="container-fluid">
+    <div class="row">
+        <h1 class="display-5 text-center mt-4 mb-3"><strong>My Notebooks</strong></h1>
+        <div class="row">
+            <div class="col-3">
+                <a asp-action="Create" class="btn btn-info ms-4">Create Notebook <i class="bi bi-plus-lg"></i></a>
+            </div>
+        </div>
     </div>
-}
+
+    @if (!Model.Any())
+    {
+        <p>You don't have any notebooks yet. Create one to organize your notes.</p>
+    }
+    else
+    {
+        <div class="table-responsive shadow p-3 mt-3 mb-5 bg-body rounded ms-4 me-4">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Notes</th>
+                        <th scope="col">Created (UTC)</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var notebook in Model)
+                    {
+                        <tr>
+                            <td><a class="N-a2" asp-action="Details" asp-route-id="@notebook.NotebookId">@notebook.NotebookName</a></td>
+                            <td>@notebook.Description</td>
+                            <td>@notebook.Notes.Count</td>
+                            <td>@notebook.DateCreated.ToString("MMM d, yyyy HH:mm")</td>
+                            <td class="text-end">
+                                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@notebook.NotebookId" aria-label="Edit @notebook.NotebookName">Edit <i class="bi bi-pencil-fill"></i></a>
+                                
+                                <a class="btn btn-danger delete" asp-action="Delete" asp-route-id="@notebook.NotebookId" aria-label="Delete @notebook.NotebookName">Delete <i class="bi bi-trash3"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

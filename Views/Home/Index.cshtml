@@ -2,19 +2,25 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">NoteConnect Demo</h1>
-    <p>A collaborative notetaking platform for students, by students.</p>
-
-    <a asp-controller="Notes" asp-action="Index" class="btn btn-primary">
-        See Your Notes
-    </a>
-
-    <a asp-controller="Notebooks" asp-action="Index" class="btn btn-primary">
-        See Your Notebooks
-    </a>
-
-      <a asp-controller="User" asp-action="Index" class="btn btn-primary">
-        See Account Details
-    </a>  
+<div class="container-fluid">
+    <div class="text-center row">
+        <h1 class="display-4 mt-3">NoteConnect Demo</h1>
+        <p>A collaborative notetaking platform for students, by students.</p>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-8 ms-3">
+            <h3 class="mb-2">About the App</h3>
+            <p class="fs-5">NoteConnect is a platform that allows students to collaborate on notes, organize them into notebooks, and access their account details seamlessly. The notes feature a rich text editor for easy formatting and organization, and can be stored in notebooks. The notebooks act as containers for organizing and managing multiple notes efficiently. Users can also invite collaborators to their notebooks for enhanced teamwork.</p>
+            <p class="fs-5">NoteConnect also allows users to create accounts through the platform directly or through Google.To access these features, users can navigate through the platform using the intuitive interface. We hope you enjoy using NoteConnect!</p>
+            <h3 class="mb-2">Contributors</h3>
+            <ul class="fs-5">
+                <li>Jayden</li>
+                <li>Noah</li>
+                <li>Olivia</li>
+                <li>Brock</li>
+                <li>Zach</li>
+            </ul>
+        </div>
+    </div>
 </div>

@@ -2,25 +2,32 @@
 
 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-<div class="mb-3">
-    <label asp-for="NoteTitle" class="form-label">Title</label>
-    <input asp-for="NoteTitle" class="form-control" required />
-    <span asp-validation-for="NoteTitle" class="text-danger"></span>
+<div class="row mb-3 align-items-center">
+    <label asp-for="NoteTitle" class="col-auto col-form-label fs-5">Note Title:</label>
+
+    <div class="col-5">
+        <input asp-for="NoteTitle" class="form-control" required />
+        <span asp-validation-for="NoteTitle" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row mb-3 align-items-center">
+    <label asp-for="NotebookId" class="col-1 col-form-label fs-5">Notebook:</label>
+
+    <div class="col-5 ms-2">
+        <select asp-for="NotebookId" asp-items="ViewBag.Notebooks" class="form-select">
+            <option value="">No notebook</option>
+        </select>
+        <span asp-validation-for="NotebookId" class="text-danger"></span>
+    </div>
 </div>
 
 <div class="mb-3">
-    <label asp-for="NotebookId" class="form-label">Notebook</label>
-    <select asp-for="NotebookId" asp-items="ViewBag.Notebooks" class="form-select">
-        <option value="">No notebook</option>
-    </select>
-    <span asp-validation-for="NotebookId" class="text-danger"></span>
-</div>
+    <label asp-for="Content" class="form-label fs-5">Content:</label>
 
-<div class="mb-3">
-    <label asp-for="Content" class="form-label">Content</label>
-
-    <div id="note-editor" style="height: 350px;"></div>
-
+    <div class="rounded-3 overflow-hidden border-dark">
+        <div id="note-editor" style="height: 350px;"></div>
+    </div>
     <input type="hidden" asp-for="Content" id="note-content" />
 
     <span asp-validation-for="Content" class="text-danger"></span>
