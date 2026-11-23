@@ -1,4 +1,5 @@
-@model Notebook
+@using NoteConnect.ViewModels
+@model NotebookViewModel
 @{
     ViewData["Title"] = Model.NotebookName;
 }
@@ -12,7 +13,7 @@
 {
     <p>@Model.Description</p>
 }
-<p class="text-muted">Created @Model.DateCreated.ToString("MMM d, yyyy HH:mm") UTC</p>
+<p class="text-muted">Created @Model.DateGiven.ToString("MMM d, yyyy HH:mm") UTC</p>
 
 <h2 class="h4 mt-4">Notes</h2>
 @if (!Model.Notes.Any())
@@ -31,11 +32,11 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var note in Model.Notes.OrderByDescending(n => n.DateCreated).ThenByDescending(n => n.NoteId))
+                @foreach (var note in Model.Notes.OrderByDescending(n => n.DateGiven).ThenByDescending(n => n.NoteId))
                 {
                     <tr>
                         <td><a asp-controller="Notes" asp-action="Details" asp-route-id="@note.NoteId">@note.NoteTitle</a></td>
-                        <td>@note.DateCreated.ToString("MMM d, yyyy HH:mm")</td>
+                        <td>@note.DateGiven.ToString("MMM d, yyyy HH:mm")</td>
                         <td>
                             <a asp-controller="Notes" asp-action="Edit" asp-route-id="@note.NoteId">Edit</a>
                             <span aria-hidden="true"> | </span>
