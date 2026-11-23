@@ -1,5 +1,6 @@
 @using Ganss.Xss
-@model Note
+@using NoteConnect.ViewModels
+@model NoteViewModel
 @{
     ViewData["Title"] = Model.NoteTitle;
 
@@ -17,7 +18,7 @@
     {
         <span>Unfiled</span>
     }
-    &middot; Created @Model.DateCreated.ToString("MMM d, yyyy HH:mm") UTC
+    &middot; Created @Model.DateGiven.ToString("MMM d, yyyy HH:mm") UTC
 </p>
 
 <div class="border rounded mb-3">
