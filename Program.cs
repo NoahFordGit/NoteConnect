@@ -14,7 +14,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 // Set this to false just for the demo. Needs to be changed later
 builder.Services.AddDefaultIdentity<User>(options => 
     options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();    // Added for ViewModels
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();

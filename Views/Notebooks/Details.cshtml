@@ -1,4 +1,5 @@
-@model Notebook
+@using NoteConnect.ViewModels
+@model NotebookViewModel
 @{
     ViewData["Title"] = Model.NotebookName;
 }
@@ -9,10 +10,10 @@
             <strong>@Model.NotebookName</strong>
         </h1>
 
-        <p class="fs-5 text-muted">Created @Model.DateCreated.ToString("MMM d, yyyy HH:mm") UTC</p>
+        <p class="fs-5 text-muted">Created @Model.DateGiven.ToString("MMM d, yyyy HH:mm") UTC</p>
     </div>
 
-    <div class="row ms-4 fs-5">
+   <div class="row ms-4 fs-5">
         <div class="col">
             @if (!string.IsNullOrWhiteSpace(Model.Description))
             {
@@ -39,11 +40,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var note in Model.Notes.OrderByDescending(n => n.DateCreated).ThenByDescending(n => n.NoteId))
+                    @foreach (var note in Model.Notes.OrderByDescending(n => n.DateGiven).ThenByDescending(n => n.NoteId))
                     {
                         <tr>
                             <td><a class="N-a1" asp-controller="Notes" asp-action="Details" asp-route-id="@note.NoteId">@note.NoteTitle</a></td>
-                            <td>@note.DateCreated.ToString("MMM d, yyyy HH:mm")</td>
+                            <td>@note.DateGiven.ToString("MMM d, yyyy HH:mm")</td>
                             <td class="text-end">
                                 <a class="btn btn-secondary" asp-controller="Notes" asp-action="Edit" asp-route-id="@note.NoteId">Edit <i class="bi bi-pencil-fill"></i></a>
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteNoteModal" data-note-id="@note.NoteId" data-note-title="@note.NoteTitle">Delete <i class="bi bi-trash"></i></button>

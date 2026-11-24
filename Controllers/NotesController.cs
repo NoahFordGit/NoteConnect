@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NoteConnect.Models.Entities;
 using NoteConnect.Services;
+using NoteConnect.ViewModels;
 
 namespace NoteConnect.Controllers;
 
@@ -11,6 +12,31 @@ namespace NoteConnect.Controllers;
 public class NotesController(INoteRepository notes, INotebookRepository notebooks) : Controller
 {
     private string CurrentUserId => User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+    // Mapped helpers for the ViewModel
+    private static NoteViewModel ToVM(Note note) => new()
+    {
+        NoteId = note.NoteId,
+        NoteTitle = note.NoteTitle,
+        Content = note.Content,
+        DateGiven = note.DateCreated,
+        UserId = note.UserId,
+        NotebookId = note.NotebookId,
+        Notebook = note.Notebook  
+    };
+
+
+    private static Note ToEntity(NoteViewModel vm) => new()
+    {
+        NoteId = vm.NoteId,
+        NoteTitle = vm.NoteTitle,
+        Content = vm.Content,
+        DateCreated = vm.DateGiven,
+        UserId = vm.UserId,
+        NotebookId = vm.NotebookId,
+        Notebook = vm.Notebook
+    };
+
 
     // GET: Notes
     public async Task<IActionResult> Index()
@@ -22,31 +48,36 @@ public class NotesController(INoteRepository notes, INotebookRepository notebook
     public async Task<IActionResult> Details(int id)
     {
         var note = await FindNoteAsync(id);
-        return note is null ? NotFound() : View(note);
+        if (note is null)
+        {
+            return NotFound();
+        }
+        return View(ToVM(note));
     }
 
     // GET: Notes/Create
     public async Task<IActionResult> Create(int? notebookId)
     {
-        var note = new Note();
+        var vm = new NoteViewModel();
         if (notebookId is int id && await notebooks.ExistsAsync(id, CurrentUserId))
-            note.NotebookId = id;
+            vm.NotebookId = id;
 
-        await SetNotebookOptionsAsync(note.NotebookId);
-        return View(note);
+        await SetNotebookOptionsAsync(vm);
+        return View(vm);
     }
 
     // POST: Notes/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("NoteTitle,Content,NotebookId")] Note note)
+    public async Task<IActionResult> Create(NoteViewModel input)
     {
+        var note = ToEntity(input);
         await SetOwnerAndValidateAsync(note);
 
         if (!ModelState.IsValid)
         {
-            await SetNotebookOptionsAsync(note.NotebookId);
-            return View(note);
+            await SetNotebookOptionsAsync(vm: input);
+            return View(input);
         }
 
         await notes.CreateAsync(note, CurrentUserId);
@@ -59,32 +90,36 @@ public class NotesController(INoteRepository notes, INotebookRepository notebook
         var note = await FindNoteAsync(id);
         if (note is null)
             return NotFound();
-
-        await SetNotebookOptionsAsync(note.NotebookId);
-        return View(note);
+        var vm = ToVM(note);
+        await SetNotebookOptionsAsync(vm);
+        return View(vm);
     }
 
     // POST: Notes/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("NoteTitle,Content,NotebookId")] Note input)
+    public async Task<IActionResult> Edit(int id, NoteViewModel input)
     {
         var note = await FindNoteAsync(id);
 
         if (note is null)
             return NotFound();
 
-        await SetOwnerAndValidateAsync(input);
+        var updated = ToEntity(input);
+        updated.NoteId = note.NoteId;
+        updated.DateCreated = note.DateCreated;
+
+        await SetOwnerAndValidateAsync(updated);
 
         if (!ModelState.IsValid)
         {
             input.NoteId = note.NoteId;
-            input.DateCreated = note.DateCreated;
-            await SetNotebookOptionsAsync(input.NotebookId);
+            input.DateGiven = note.DateCreated;
+            await SetNotebookOptionsAsync(input);
             return View(input);
         }
 
-        if (!await notes.UpdateAsync(id, input, CurrentUserId))
+        if (!await notes.UpdateAsync(id, updated, CurrentUserId))
             return NotFound();
 
         return RedirectToAction(nameof(Index));
@@ -94,7 +129,7 @@ public class NotesController(INoteRepository notes, INotebookRepository notebook
     public async Task<IActionResult> Delete(int id)
     {
         var note = await FindNoteAsync(id);
-        return note is null ? NotFound() : View(note);
+        return note is null ? NotFound() : View(ToVM(note));
     }
 
     // POST: Notes/Delete/5
@@ -124,12 +159,12 @@ public class NotesController(INoteRepository notes, INotebookRepository notebook
         }
     }
 
-    private async Task SetNotebookOptionsAsync(int? notebookId)
+    private async Task SetNotebookOptionsAsync(NoteViewModel vm)
     {
-        ViewBag.Notebooks = new SelectList(
+        vm.NotebookOptions = new SelectList(
             await notebooks.GetAllAsync(CurrentUserId),
             nameof(Notebook.NotebookId),
             nameof(Notebook.NotebookName),
-            notebookId);
+            vm.NotebookId);
     }
 }

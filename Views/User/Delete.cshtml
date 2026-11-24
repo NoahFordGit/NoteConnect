@@ -9,5 +9,6 @@
 
 <form asp-action="Delete" asp-route-id="@Model.Id" method="post"
       onsubmit="return confirm('Are you sure?')">
-    <button type="submit" class="btn btn-danger">Delete Account <i class="bi bi-trash"></i></button>
+      @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-danger">Delete Account</button>
 </form>

@@ -1,4 +1,5 @@
-@model IEnumerable<Notebook>
+@using NoteConnect.ViewModels
+@model IEnumerable<NotebookViewModel>
 @{
     ViewData["Title"] = "My Notebooks";
 }
@@ -37,7 +38,7 @@
                             <td><a class="N-a2" asp-action="Details" asp-route-id="@notebook.NotebookId">@notebook.NotebookName</a></td>
                             <td>@notebook.Description</td>
                             <td>@notebook.Notes.Count</td>
-                            <td>@notebook.DateCreated.ToString("MMM d, yyyy HH:mm")</td>
+                            <td>@notebook.DateGiven.ToString("MMM d, yyyy HH:mm")</td>
                             <td class="text-end">
                                 <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@notebook.NotebookId" aria-label="Edit @notebook.NotebookName">Edit <i class="bi bi-pencil-fill"></i></a>
                                 
