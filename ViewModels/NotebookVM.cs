@@ -13,7 +13,7 @@ namespace NoteConnect.ViewModels
         [Required(ErrorMessage = "Notebook name is required.")]
         public string NotebookName { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Description is required.")]
+        // Description is not required 
         public string? Description { get; set; }
 
          // Does not need an error message (db given or set value)
