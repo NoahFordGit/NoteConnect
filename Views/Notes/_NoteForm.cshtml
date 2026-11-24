@@ -16,7 +16,7 @@
     <label asp-for="NotebookId" class="col-1 col-form-label fs-5">Notebook:</label>
 
     <div class="col-5 ms-2">
-        <select asp-for="NotebookId" asp-items="ViewBag.Notebooks" class="form-select">
+        <select asp-for="NotebookId" asp-items="Model.NotebookOptions" class="form-select">
             <option value="">No notebook</option>
         </select>
         <span asp-validation-for="NotebookId" class="text-danger"></span>
