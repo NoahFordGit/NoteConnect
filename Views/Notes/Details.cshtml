@@ -8,8 +8,8 @@
     var safeContent = sanitizer.Sanitize(Model.Content);
 }
 
-<h1 class="text-break">@Model.NoteTitle</h1>
-<p class="text-muted">
+<h1 class="display-5 text-center p-3"><strong>@Model.NoteTitle</strong></h1>
+<p class="text-muted fs-5 ms-4">
     @if (Model.Notebook is not null)
     {
         <a asp-controller="Notebooks" asp-action="Details" asp-route-id="@Model.NotebookId">@Model.Notebook.NotebookName</a>
@@ -21,15 +21,59 @@
     &middot; Created @Model.DateGiven.ToString("MMM d, yyyy HH:mm") UTC
 </p>
 
-<div class="border rounded mb-3">
+<div class="ms-4 me-4 border rounded mb-3">
     <div id="note-viewer"></div>
 </div>
 
 <input type="hidden" id="note-content" value="@safeContent" />
 
-<a asp-action="Edit" asp-route-id="@Model.NoteId" class="btn btn-primary">Edit</a>
-<a asp-action="Delete" asp-route-id="@Model.NoteId" class="btn btn-outline-danger">Delete</a>
-<a asp-action="Index" class="btn btn-outline-secondary">Back to notes</a>
+<div class="ms-4">
+    <a asp-action="Edit" asp-route-id="@Model.NoteId" class="btn btn-primary">Edit <i class="bi bi-pencil-fill"></i></a>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteNoteModal"> Delete <i class="bi bi-trash"></i>
+    </button>
+    <a asp-action="Index" class="btn btn-secondary">Back to Notes</a>
+</div>
+
+@section Modals {
+    <div class="modal fade" id="deleteNoteModal" tabindex="-1"
+     aria-labelledby="deleteNoteModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteNoteModalLabel">
+                        Delete Note?
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    Are you sure you want to delete <strong class="text-break">@Model.NoteTitle</strong>?
+                    This action cannot be undone.
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <form asp-action="Delete"
+                        asp-route-id="@Model.NoteId"
+                        method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
 
 @section Scripts {
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />

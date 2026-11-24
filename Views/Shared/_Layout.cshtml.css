@@ -7,8 +7,12 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+p {
+  font-size: 16px;
+}
+
 a {
-  color: #0077cc;
+  background-color: transparent;
 }
 
 .btn-primary {
@@ -40,9 +44,35 @@ button.accept-policy {
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+
+/* Notebook Navigation */
+.notebook-navbar {
+    padding-bottom: 0;
+}
+
+.notebook-tabs {
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
+}
+
+.notebook-tabs .notebook-tab {
+    background-color: #244C50;
+    color: #181b20 !important;
+    border-color: #6d8ca7;
+}
+
+.notebook-tabs .notebook-tab:hover {
+    background-color: #397579;
+    transform: translateY(-3px);
+}
+
+.notebook-tabs .notebook-tab.active {
+    background-color: #49B99B;
+    color: #181b20 !important;
 }

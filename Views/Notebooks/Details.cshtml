@@ -4,51 +4,173 @@
     ViewData["Title"] = Model.NotebookName;
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="text-break">@Model.NotebookName</h1>
-    <a asp-controller="Notes" asp-action="Create" asp-route-notebookId="@Model.NotebookId" class="btn btn-primary">Add note</a>
+<div class="container-fluid">
+    <div class="text-center row">
+        <h1 class="display-5">
+            <strong>@Model.NotebookName</strong>
+        </h1>
+
+        <p class="fs-5 text-muted">Created @Model.DateGiven.ToString("MMM d, yyyy HH:mm") UTC</p>
+    </div>
+
+   <div class="row ms-4 fs-5">
+        <div class="col">
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <p><strong>Description:</strong> @Model.Description</p>
+                <p></p>
+            }
+        </div>
+    </div>
+
+    <h4 class="ms-4">Notes</h4>
+    @if (!Model.Notes.Any())
+    {
+        <p>There are no notes in this notebook yet. Add your first note to get started.</p>
+    }
+    else
+    {
+        <div class="table-responsive shadow p-3 mt-3 mb-5 bg-body rounded ms-4 me-4">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Created (UTC)</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var note in Model.Notes.OrderByDescending(n => n.DateGiven).ThenByDescending(n => n.NoteId))
+                    {
+                        <tr>
+                            <td><a class="N-a1" asp-controller="Notes" asp-action="Details" asp-route-id="@note.NoteId">@note.NoteTitle</a></td>
+                            <td>@note.DateGiven.ToString("MMM d, yyyy HH:mm")</td>
+                            <td class="text-end">
+                                <a class="btn btn-secondary" asp-controller="Notes" asp-action="Edit" asp-route-id="@note.NoteId">Edit <i class="bi bi-pencil-fill"></i></a>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteNoteModal" data-note-id="@note.NoteId" data-note-title="@note.NoteTitle">Delete <i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    <div class="ms-4">
+        <a asp-action="Edit" asp-route-id="@Model.NotebookId" class="btn btn-primary">Edit Notebook <i class="bi bi-pencil-fill"></i>
+        </a>
+
+        <button type="button"
+                class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteNotebookModal">
+            Delete Notebook <i class="bi bi-trash"></i>
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Back to notebooks
+        </a>
+    </div>
 </div>
 
-@if (!string.IsNullOrWhiteSpace(Model.Description))
-{
-    <p>@Model.Description</p>
-}
-<p class="text-muted">Created @Model.DateGiven.ToString("MMM d, yyyy HH:mm") UTC</p>
+@section Modals {
+    <!-- Delete Notebook Modal -->
+    <div class="modal fade" id="deleteNotebookModal" tabindex="-1"
+         aria-labelledby="deleteNotebookModalLabel" aria-hidden="true">
 
-<h2 class="h4 mt-4">Notes</h2>
-@if (!Model.Notes.Any())
-{
-    <p>There are no notes in this notebook yet. Add your first note to get started.</p>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table align-middle">
-            <thead>
-                <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Created (UTC)</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var note in Model.Notes.OrderByDescending(n => n.DateGiven).ThenByDescending(n => n.NoteId))
-                {
-                    <tr>
-                        <td><a asp-controller="Notes" asp-action="Details" asp-route-id="@note.NoteId">@note.NoteTitle</a></td>
-                        <td>@note.DateGiven.ToString("MMM d, yyyy HH:mm")</td>
-                        <td>
-                            <a asp-controller="Notes" asp-action="Edit" asp-route-id="@note.NoteId">Edit</a>
-                            <span aria-hidden="true"> | </span>
-                            <a asp-controller="Notes" asp-action="Delete" asp-route-id="@note.NoteId">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteNotebookModalLabel">
+                        Delete Notebook?
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    Are you sure you want to delete
+                    <strong>@Model.NotebookName</strong>?
+                    This action cannot be undone.
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <form asp-action="Delete"
+                          asp-route-id="@Model.NotebookId"
+                          method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Note Modal -->
+    <div class="modal fade" id="deleteNoteModal" tabindex="-1"
+         aria-labelledby="deleteNoteModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteNoteModalLabel">
+                        Delete Note?
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    Are you sure you want to delete
+                    <strong id="noteTitleToDelete"></strong>?
+                    This action cannot be undone.
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <form asp-controller="Notes"
+                          asp-action="Delete"
+                          method="post">
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" name="id" id="noteIdToDelete" />
+
+                        <button type="submit" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
     </div>
 }
 
-<a asp-action="Edit" asp-route-id="@Model.NotebookId" class="btn btn-primary">Edit notebook</a>
-<a asp-action="Delete" asp-route-id="@Model.NotebookId" class="btn btn-outline-danger">Delete notebook</a>
-<a asp-action="Index" class="btn btn-outline-secondary">Back to notebooks</a>
+@section Scripts {
+    <script>
+        const deleteNoteModal = document.getElementById('deleteNoteModal');
+
+        deleteNoteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+
+            document.getElementById('noteIdToDelete').value =
+                button.getAttribute('data-note-id');
+
+            document.getElementById('noteTitleToDelete').textContent =
+                button.getAttribute('data-note-title');
+        });
+    </script>
+}

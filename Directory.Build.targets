@@ -1,0 +1,5 @@
+<Project>
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'NoteConnect'">
+    <Compile Remove="tests/**/*.cs" />
+  </ItemGroup>
+</Project>

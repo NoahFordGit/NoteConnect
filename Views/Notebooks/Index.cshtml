@@ -1,47 +1,115 @@
 @using NoteConnect.ViewModels
 @model IEnumerable<NotebookViewModel>
 @{
-    ViewData["Title"] = "My notebooks";
+    ViewData["Title"] = "My Notebooks";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>My notebooks</h1>
-    <a asp-action="Create" class="btn btn-primary">Create notebook</a>
+<div class="container-fluid">
+    <div class="row">
+        <h1 class="display-5 text-center mt-4 mb-3"><strong>My Notebooks</strong></h1>
+        <div class="row">
+            <div class="col-3">
+                <a asp-action="Create" class="btn btn-info ms-4">Create Notebook <i class="bi bi-plus-lg"></i></a>
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p>You don't have any notebooks yet. Create one to organize your notes.</p>
+    }
+    else
+    {
+        <div class="table-responsive shadow p-3 mt-3 mb-5 bg-body rounded ms-4 me-4">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Notes</th>
+                        <th scope="col">Created (UTC)</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var notebook in Model)
+                    {
+                        <tr>
+                            <td><a class="N-a2" asp-action="Details" asp-route-id="@notebook.NotebookId">@notebook.NotebookName</a></td>
+                            <td>@notebook.Description</td>
+                            <td>@notebook.Notes.Count</td>
+                            <td>@notebook.DateGiven.ToString("MMM d, yyyy HH:mm")</td>
+                            <td class="text-end">
+                                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@notebook.NotebookId" aria-label="Edit @notebook.NotebookName">Edit <i class="bi bi-pencil-fill"></i></a>
+                                
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteNotebookModal" data-notebook-id="@notebook.NotebookId" data-notebook-name="@notebook.NotebookName">Delete <i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    @section Modals {
+        <div class="modal fade" id="deleteNotebookModal" tabindex="-1"
+            aria-labelledby="deleteNotebookModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteNotebookModalLabel">
+                            Delete Notebook?
+                        </h5>
+
+                        <button type="button" class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        Are you sure you want to delete
+                        <strong id="notebookNameToDelete"></strong>?
+                        This action cannot be undone.
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <form asp-action="Delete" method="post">
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                name="id"
+                                id="notebookIdToDelete" />
+
+                            <button type="submit" class="btn btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
-@if (!Model.Any())
-{
-    <p>You don't have any notebooks yet. Create one to organize your notes.</p>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table align-middle">
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Notes</th>
-                    <th scope="col">Created (UTC)</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var notebook in Model)
-                {
-                    <tr>
-                        <td><a asp-action="Details" asp-route-id="@notebook.NotebookId">@notebook.NotebookName</a></td>
-                        <td>@notebook.Description</td>
-                        <td>@notebook.Notes.Count</td>
-                        <td>@notebook.DateGiven.ToString("MMM d, yyyy HH:mm")</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@notebook.NotebookId" aria-label="Edit @notebook.NotebookName">Edit</a>
-                            <span aria-hidden="true"> | </span>
-                            <a asp-action="Delete" asp-route-id="@notebook.NotebookId" aria-label="Delete @notebook.NotebookName">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
+    @section Scripts {
+        <script>
+            const deleteNotebookModal = document.getElementById('deleteNotebookModal');
+
+            deleteNotebookModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+
+                const notebookId = button.getAttribute('data-notebook-id');
+                const notebookName = button.getAttribute('data-notebook-name');
+
+                document.getElementById('notebookIdToDelete').value = notebookId;
+                document.getElementById('notebookNameToDelete').textContent = notebookName;
+            });
+        </script>
+    }

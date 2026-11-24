@@ -12,13 +12,50 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+.N-a1 {
+  text-decoration: none;
+  color:#e4d940;
+}
+
+.N-a2 {
+  text-decoration: none;
+  color:#25c9d4;
+}
+
 html {
   position: relative;
   min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.25),
+            rgba(0, 0, 0, 0.25)
+        ),
+        url('./images/newbg.avif');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Main Content */
+.main-content {
+    background-color: rgba(36, 36, 43, 0.80);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.to-do {
+  background-color: white;
+  font-size: 18px;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -28,4 +65,113 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+/* Account Navigation */
+.account-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+.account-nav .account-icon {
+    color: white;
+    font-size: 1.8rem;
+    padding: 8px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.account-nav .account-icon:hover {
+    color: #87a8cc;
+    transform: translateY(-2px);
+}
+
+.account-nav form {
+    margin: 0;
+}
+
+.account-nav button.account-icon {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Notebook Navigation */
+.notebook-navbar {
+    padding-bottom: 0;
+}
+
+.notebook-tabs {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    padding-left: 10px;
+}
+
+.notebook-tabs .notebook-tab {
+    position: relative;
+    background-color: #397579;
+    color: white !important;
+    padding: 12px 24px !important;
+    border-radius: 12px 12px 0 0;
+    margin-left: -15px;
+    border: 1px solid #49B99B;
+    transition: background-color 0.2s, transform 0.2s;
+    z-index: 1;
+    width: 155px;
+    text-align: center;
+}
+
+/* Hovered Tab */
+.notebook-tabs .notebook-tab:hover {
+    background-color: #87a8cc;
+    transform: translateY(-3px);
+    z-index: 5;
+}
+
+/* Active Tab */
+.notebook-tabs .notebook-tab.active {
+    background-color: #49B99B;
+    font-weight: bold;
+    z-index: 10;
+    height: 58px;
+}
+
+/* Quill editor */
+.ql-container.ql-snow {
+  background-color: #697481;
+  color: #F8F9FA;
+  border-color: transparent;
+  border-width: 2px;
+}
+
+/* Quill toolbar */
+.ql-toolbar.ql-snow {
+  background-color: #58626d;
+  border-color: transparent;
+  border-width: 2px;
+}
+
+/* Quill toolbar icons */
+.ql-snow .ql-stroke {
+  stroke: #E9ECEF;
+}
+
+.ql-snow .ql-fill {
+  fill: #E9ECEF;
+}
+
+.ql-snow .ql-picker {
+  color: #E9ECEF;
+}
+
+.ql-snow .ql-picker-options {
+  background-color: #343A40;
+}
+
+.ql-editor {
+    font-size: 1rem;
+    line-height: 1.6;
 }
